@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Form Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    #myForm {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f4f4f4;
+      border-radius: 5px;
+    }
+
+    #myForm label,
+    #myForm input,
+    #myForm select {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    #myForm input[type="text"],
+    #myForm input[type="number"],
+    #myForm input[type="email"],
+    #myForm select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    #myForm input[type="checkbox"],
+    #myForm input[type="radio"] {
+      display: inline-block;
+      margin-right: 5px;
+    }
+
+    #myForm input[type="reset"],
+    #myForm input[type="submit"] {
+      background-color: #000000;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+    }
+
+    #myForm input[type="reset"]:hover,
+    #myForm input[type="submit"]:hover {
+      background-color: #647788;
+    }
+
+    #myForm input[type="editData"],
+    #myForm input[type="deleteData"] {
+      background-color: #000000;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    @media screen and (max-width: 600px) {
+      #myForm {
+        max-width: 100%;
+      }
+    }
+
+
+    h2 {
+      text-align: center;
+    }
+
+    h3 {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    #search,
+    #sort {
+      left: -70px;
+      margin-bottom: 10px;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 10px;
+      background-color: #f4f4f4;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>CRUD Operations</h2>
+
+  <form id="myForm">
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age" required><br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br><br>
+
+    <label for="hobbies">Hobbies:</label><br>
+    <input type="checkbox" id="hobby1" name="hobbies" value="Drawing"> Drawing<br>
+    <input type="checkbox" id="hobby2" name="hobbies" value="Reading"> Reading<br>
+    <input type="checkbox" id="hobby3" name="hobbies" value="Cooking"> Cooking<br><br>
+
+    <label for="gender">Gender:</label><br>
+    <input type="radio" id="male" name="gender" value="Male" required> Male<br>
+    <input type="radio" id="female" name="gender" value="Female" required> Female<br><br>
+
+    <label for="state">State:</label>
+    <select id="state" name="state" required>
+      <option value="">Select State</option>
+    </select><br><br>
+
+    <label for="city">City:</label>
+    <select id="city" name="city" required>
+      <option value="">Select City</option>
+    </select><br><br>
+
+    <input type="reset" value="Cancel">
+    <input type="submit" value="Submit">
+
+  </form>
+
+  <hr>
+
+  <h3>Data Table</h3>
+  <input type="text" id="search" placeholder="Search by name">
+  <select id="sort" name="sort">
+    <option value="ascending">Ascending</option>
+    <option value="descending"> Descending</option>
+  </select>
+  <table id="dataTable">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Age</th>
+      <th>City</th>
+      <th>Hobbies</th>
+      <th>Gender</th>
+      <th>State</th>
+      <th>Email</th>
+      <th>Actions</th>
+    </tr>
+  </table>
+
+  <script>
+
+    let dataArray = [];
+
+
+    const states = [
+      { name: "Gujarat", cities: ["Navsari", "Surat", "Valsad"] },
+      { name: "Maharastra", cities: ["Pune", "Nagpur", "Nashik"] },
+    ];
+
+    // Function city dropdown 
+    function cityDropdown() {
+      const stateDropdown = document.getElementById("state");
+      const cityDropdown = document.getElementById("city");
+      const selectedState = stateDropdown.value;
+      cityDropdown.innerHTML = "<option value=''>Select City</option>";
+      if (selectedState !== "") {
+        const state = states.find(s => s.name === selectedState);
+        state.cities.forEach(city => {
+          const option = document.createElement("option");
+          option.value = city;
+          option.textContent = city;
+          cityDropdown.appendChild(option);
+        });
+      }
+    }
+
+    // Function to add data table
+    function addDataTable(data) {
+      const table = document.getElementById("dataTable");
+      const row = table.insertRow();
+      const idCell = row.insertCell();
+      const nameCell = row.insertCell();
+      const ageCell = row.insertCell();
+      const cityCell = row.insertCell();
+      const hobbiesCell = row.insertCell();
+      const genderCell = row.insertCell();
+      const stateCell = row.insertCell();
+      const emailCell = row.insertCell();
+      const actionsCell = row.insertCell();
+      const id = dataArray.length;
+      Prachi
+      idCell.textContent = id;
+      nameCell.textContent = data.name;
+      ageCell.textContent = data.age;
+      cityCell.textContent = data.city;
+      hobbiesCell.textContent = data.hobbies.join(", ");
+      genderCell.textContent = data.gender;
+      stateCell.textContent = data.state;
+      emailCell.textContent = data.email;
+      actionsCell.innerHTML = "<button type=editData onclick='editData(" + id + ")'>Edit</button> " +
+        "<button type=deleteData onclick='deleteData(" + id + ")'>Delete</button>";
+    }
+
+    // Function to clear the form
+    function clearForm() {
+      document.getElementById("myForm").reset();
+    }
+
+    // Function to validate the form
+    function validateForm() {
+      const form = document.getElementById("myForm");
+      const name = form.elements["name"].value.trim();
+      const age = form.elements["age"].value.trim();
+      const city = form.elements["city"].value.trim();
+      const hobbies = Array.from(form.elements["hobbies"])
+        .filter(elem => elem.checked)
+        .map(elem => elem.value);
+      const gender = form.elements["gender"].value;
+      const state = form.elements["state"].value.trim();
+      const email = form.elements["email"].value.trim();
+
+      //validation for name
+      const regEx = /^[A-Za-z]+$/;
+      if (name === "" || !regEx.test(name)) {
+        alert("Please enter letters only in name.");
+        return false;
+      }
+
+      //validation for age
+      var ages = document.getElementById('age').value;
+      if (ages == "")
+        return true;
+      if (isNaN(ages) || ages < 1 || ages > 50) {
+        alert("The age must be a number between 1 and 50");
+        return false;
+      }
+
+      if (name === "" || age === "" || city === "" || hobbies.length === 0 ||
+        gender === "" || state === "" || email === "") {
+        alert("Please fill in all the required fields.");
+        return false;
+      }
+
+      return true;
+    }
+
+    // Function to Submit
+    function handleSubmit(event) {
+      event.preventDefault();
+      if (!validateForm()) {
+        return;
+      }
+      const form = document.getElementById("myForm");
+      const data = {
+
+        name: form.elements["name"].value.trim(),
+        age: form.elements["age"].value.trim(),
+        city: form.elements["city"].value.trim(),
+        hobbies: Array.from(form.elements["hobbies"])
+          .filter(elem => elem.checked)
+          .map(elem => elem.value),
+        gender: form.elements["gender"].value,
+        state: form.elements["state"].value.trim(),
+        email: form.elements["email"].value.trim()
+      };
+
+      console.log("data", data)
+      dataArray.push(data);
+      addDataTable(data);
+      clearForm();
+    }
+
+
+    console.log("dataArray", dataArray)
+
+    // Function to Cancel
+    function handleCancel() {
+      clearForm();
+      document.getElementById("cancel");
+      document.querySelector("input[type='submit']").value = "Submit";
+    }
+
+    // Function to edit data
+    function editData(id) {
+      const data = dataArray[id - 1];
+      const form = document.getElementById("myForm");
+      console.log(data, form.elements["name"].value)
+      form.elements["name"].value = data.name;
+      form.elements["age"].value = data.age;
+      form.elements["city"].value = data.city;
+      Array.from(form.elements["hobbies"]).forEach(hobby => {
+        hobby.checked = data.hobbies.includes(hobby.value);
+      });
+      form.elements["gender"].value = data.gender;
+      form.elements["state"].value = data.state;
+      form.elements["email"].value = data.email;
+
+      const submitButton = document.querySelector("input[type='submit']");
+      submitButton.value = "Update";
+
+      const cancelButton = document.getElementById("input[type='cancel']");
+      cancelButton.style.display = "inline";
+      cancelButton.onclick = function () {
+        clearForm();
+        submitButton.value = "Submit";
+        cancelButton.value = "Cancel";
+      };
+    }
+
+    // Function to delete data
+    function deleteData(id) {
+      dataArray.splice(id - 1, 1);
+      const table = document.getElementById("dataTable");
+      table.deleteRow(id);
+    }
+
+    // Function to search
+    function performSearch() {
+      const searchInput = document.getElementById("search");
+      const searchText = searchInput.value.trim().toLowerCase();
+      const table = document.getElementById("dataTable");
+      const rows = table.getElementsByTagName("tr");
+
+      for (let i = 1; i < rows.length; i++) {
+        const nameCell = rows[i].getElementsByTagName("td")[1];
+        if (nameCell.textContent.toLowerCase().includes(searchText)) {
+          rows[i].style.display = "";
+        } else {
+          rows[i].style.display = "none";
+        }
+      }
+    }
+
+    // Function to sorting
+    function performSorting() {
+      const sortSelect = document.getElementById("sort");
+      const sortOrder = sortSelect.value;
+      const table = document.getElementById("dataTable");
+      const rows = Array.from(table.rows).slice(1);
+
+      rows.sort((a, b) => {
+        const nameA = a.cells[1].textContent.toLowerCase();
+        const nameB = b.cells[1].textContent.toLowerCase();
+        if (sortOrder === "ascending") {
+          return nameA.localeCompare(nameB);
+        } else {
+          return nameB.localeCompare(nameA);
+        }
+      });
+
+      rows.forEach(row => table.appendChild(row));
+    }
+
+    // Populate state dropdown on page load
+    window.onload = function () {
+      const stateDropdown = document.getElementById("state");
+      states.forEach(state => {
+        const option = document.createElement("option");
+        option.value = state.name;
+        option.textContent = state.name;
+        stateDropdown.appendChild(option);
+      });
+
+      // Add event listeners
+      document.getElementById("state").addEventListener("change", cityDropdown);
+      document.getElementById("myForm").addEventListener("submit", handleSubmit);
+      document.getElementById("myForm").addEventListener("cancel", handleCancel);
+      document.getElementById("search").addEventListener("keyup", performSearch);
+      document.getElementById("sort").addEventListener("change", performSorting);
+    };
+
+  </script>
+</body>
+
+</html>
