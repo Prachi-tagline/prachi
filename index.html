@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tree demo</title>
+    <style>
+        ul,
+        #root {
+            list-style-type: none;
+        }
+
+        #root {
+            margin: 0;
+            padding: 0;
+        }
+
+        .test {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .test::before {
+            content: "\276F";
+            color: black;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .test-down::before {
+            -ms-transform: rotate(90deg);
+            -webkit-transform: rotate(90deg);
+            transform: rotate(90deg);
+        }
+
+        .technology {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Folder structure</h2>
+
+    <ul id="root">
+        <li><span class="test">Test</span>
+            <ul class="technology">
+                <li>HTML</li>
+                <li>HTML</li>
+                <li><span class="test">Test</span>
+                    <ul class="technology">
+                        <li>CSS</li>
+                        <li>CSS</li>
+                        <li>CSS</li>
+                        <li><span class="test">Test</span>
+                            <ul class="technology">
+                                <li>JS</li>
+                                <li>JS</li>
+                                <li>JS</li>
+                                <li>JS</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <script>
+        var toggler = document.getElementsByClassName("test");
+        var i;
+
+        for (i = 0; i < toggler.length; i++) {
+            toggler[i].addEventListener("click", function () {
+                this.parentElement.querySelector(".technology").classList.toggle("active");
+                this.classList.toggle("test-down");
+            });
+        }
+    </script>
+
+</body>
+
+</html>
